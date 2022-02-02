@@ -9,7 +9,7 @@
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
-    "check":"npm-check -u -s"
+    "check": "npm-check -u -s"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,7 @@
   "devDependencies": {
     "@testing-library/react": "^12.1.2",
     "@types/axios": "^0.14.0",
-    "@types/faker": "^6.6.9",
+    "@types/faker": "^5.1.2",
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.14",
     "@types/react": "^17.0.38",
@@ -33,7 +33,7 @@
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-standard": "^5.0.0",
-    "faker": "^6.6.6",
+    "faker": "^5.1.0",
     "git-commit-msg-linter": "^4.0.7",
     "husky": "^7.0.4",
     "identity-obj-proxy": "^3.0.0",
