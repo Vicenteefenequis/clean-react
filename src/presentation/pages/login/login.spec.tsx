@@ -1,5 +1,5 @@
 import React from 'react'
-import Login from './login'
+import { Login } from '@/presentation/pages'
 import { createMemoryHistory } from 'history'
 import 'jest-localstorage-mock'
 import { AuthenticationSpy, ValidationStub } from '@/presentation/test'
