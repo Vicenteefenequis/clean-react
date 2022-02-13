@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react"
-import Styles from "./login-styles.scss"
+import React, { useState, useEffect } from 'react'
+import Styles from './login-styles.scss'
 import {
   Footer,
   Input,
   LoginHeader,
-  FormStatus,
-} from "@/presentation/components"
-import Context from "@/presentation/contexts/form/form-context"
-import { Validation } from "@/presentation/protocols/validation"
-import { Authentication, SaveAccessToken } from "@/domain/usecases"
-import { Link, useHistory } from "react-router-dom"
+  FormStatus
+} from '@/presentation/components'
+import Context from '@/presentation/contexts/form/form-context'
+import { Validation } from '@/presentation/protocols/validation'
+import { Authentication, SaveAccessToken } from '@/domain/usecases'
+import { Link, useHistory } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -19,24 +19,24 @@ type Props = {
 const Login: React.FC<Props> = ({
   validation,
   authentication,
-  saveAccessToken,
+  saveAccessToken
 }: Props) => {
   const history = useHistory()
 
   const [state, setState] = useState({
     isLoading: false,
-    email: "",
-    password: "",
-    emailError: "",
-    passwordError: "",
-    mainError: "",
+    email: '',
+    password: '',
+    emailError: '',
+    passwordError: '',
+    mainError: ''
   })
 
   useEffect(() => {
     setState({
       ...state,
-      emailError: validation.validate("email", state.email),
-      passwordError: validation.validate("password", state.password),
+      emailError: validation.validate('email', state.email),
+      passwordError: validation.validate('password', state.password)
     })
   }, [state.email, state.password])
 
@@ -51,11 +51,11 @@ const Login: React.FC<Props> = ({
       setState({ ...state, isLoading: true })
       const account = await authentication.auth({
         email: state.email,
-        password: state.password,
+        password: state.password
       })
 
       await saveAccessToken.save(account.accessToken)
-      history.replace("/")
+      history.replace('/')
     } catch (error) {
       setState({ ...state, isLoading: false, mainError: error.message })
     }
