@@ -7,29 +7,47 @@ import {
   waitFor
 } from '@testing-library/react'
 import SignUp from './signup'
-import { AddAccountSpy, Helper, ValidationStub } from '@/presentation/test'
+import {
+  AddAccountSpy,
+  Helper,
+  SaveAccessTokenMock,
+  ValidationStub
+} from '@/presentation/test'
 import faker from 'faker'
 import { EmailInUseError } from '@/domain/errors'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
 type SutTypes = {
   sut: RenderResult
   addAccountSpy: AddAccountSpy
+  saveAccessTokenMock: SaveAccessTokenMock
 }
 
 type SutParmas = {
   validationError: string
 }
 
+const history = createMemoryHistory({ initialEntries: ['/signup'] })
+
 const maketSut = (params?: SutParmas): SutTypes => {
   const validationStub = new ValidationStub()
-  const addAccountSpy = new AddAccountSpy()
   validationStub.errorMessage = params?.validationError
+  const addAccountSpy = new AddAccountSpy()
+  const saveAccessTokenMock = new SaveAccessTokenMock()
   const sut = render(
-    <SignUp addAccount={addAccountSpy} validation={validationStub} />
+    <Router history={history}>
+      <SignUp
+        addAccount={addAccountSpy}
+        saveAccessToken={saveAccessTokenMock}
+        validation={validationStub}
+      />
+    </Router>
   )
   return {
     sut,
-    addAccountSpy
+    addAccountSpy,
+    saveAccessTokenMock
   }
 }
 
@@ -164,5 +182,15 @@ describe('SignUp Component', () => {
     await simulateValidSubmit(sut)
     Helper.testElementText(sut, 'main-error', error.message)
     Helper.testChildCount(sut, 'error-wrap', 1)
+  })
+
+  test('Should call SaveAccessToken on success', async () => {
+    const { sut, addAccountSpy, saveAccessTokenMock } = maketSut()
+    await simulateValidSubmit(sut)
+    expect(saveAccessTokenMock.accessToken).toBe(
+      addAccountSpy.account.accessToken
+    )
+    expect(history.length).toBe(1)
+    expect(history.location.pathname).toBe('/')
   })
 })
