@@ -4,7 +4,7 @@ import {
   mockInvalidData,
   mockOk,
   mockUnexpectedError
-} from './login-mocks'
+} from '../support/login-mocks'
 import faker from 'faker'
 
 const simulateValidSubmit = (): void => {
