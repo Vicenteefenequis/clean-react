@@ -25,5 +25,5 @@ export const testUrl = (path: string): void => {
 }
 
 export const testLocalStorageItem = (key: string): void => {
-  cy.window().then(window => assert.isOk(window.localStorage.get(key)))
+  cy.window().then(window => assert.isOk(window.localStorage.getItem(key)))
 }
