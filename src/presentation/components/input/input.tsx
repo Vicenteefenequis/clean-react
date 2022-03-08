@@ -3,8 +3,8 @@ import Styles from './input-styles.scss'
 import Context from '@/presentation/contexts/form/form-context'
 
 type Props = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
+React.InputHTMLAttributes<HTMLInputElement>,
+HTMLInputElement
 >
 
 const Input: React.FC<Props> = (props: Props) => {
