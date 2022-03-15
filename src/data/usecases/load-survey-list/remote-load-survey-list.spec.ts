@@ -3,16 +3,15 @@ import { HttpGetClientSpy } from '@/data/test'
 import faker from 'faker'
 import { UnexpectedError } from '@/domain/errors'
 import { HttpStatusCode } from '@/data/protocols/http'
-import { SurveyModel } from '@/domain/models'
 import { mockSurveyListModel } from '@/domain/test'
 
 type SutTypes = {
   sut: RemoteLoadSurveyList
-  httpGetClientSpy: HttpGetClientSpy<SurveyModel[]>
+  httpGetClientSpy: HttpGetClientSpy<RemoteLoadSurveyList.Model[]>
 }
 
 const makeSut = (url = faker.internet.url()): SutTypes => {
-  const httpGetClientSpy = new HttpGetClientSpy<SurveyModel[]>()
+  const httpGetClientSpy = new HttpGetClientSpy<RemoteLoadSurveyList.Model[]>()
   const sut = new RemoteLoadSurveyList(url, httpGetClientSpy)
   return {
     sut,
@@ -55,7 +54,7 @@ describe('RemoteLoadSurveyList', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError())
   })
 
-  test('Should return an list of SurveyModels if HttpGetClient returns 200', async () => {
+  test('Should return an list of LoadSurveyList.Model if HttpGetClient returns 200', async () => {
     const { httpGetClientSpy, sut } = makeSut()
     const httpResult = mockSurveyListModel()
     httpGetClientSpy.response = {
@@ -66,7 +65,7 @@ describe('RemoteLoadSurveyList', () => {
     expect(surveyList).toEqual(httpResult)
   })
 
-  test('Should return an empty list of SurveyModels if HttpGetClient returns 204', async () => {
+  test('Should return an empty list of LoadSurveyList.Model if HttpGetClient returns 204', async () => {
     const { httpGetClientSpy, sut } = makeSut()
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.noContent
