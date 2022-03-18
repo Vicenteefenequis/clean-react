@@ -1,11 +1,14 @@
 import faker from 'faker'
-import * as FormHelper from '../support/form-helpers'
-import * as Helper from '../support/helpers'
-import {
-  mockEmailInUseError,
-  mockOk,
-  mockUnexpectedError
-} from '../support/signup-mocks'
+import * as FormHelper from '../utils/form-helpers'
+import * as Helper from '../utils/helpers'
+import * as Http from '../utils/http-mocks'
+
+const path = /signup/
+export const mockUnexpectedError = (): void =>
+  Http.mockServerError(path, 'POST')
+export const mockEmailInUseError = (): void =>
+  Http.mockForbiddenError(path, 'POST')
+export const mockOk = (): void => Http.mockOk(path, 'POST', 'fx:account')
 
 const populateFields = (): void => {
   cy.getByTestId('name').focus().type(faker.name.findName())
