@@ -37,29 +37,38 @@ const SignUp: React.FC<Props> = ({ validation, addAccount }: Props) => {
   })
 
   useEffect(() => {
+    validate('email')
+  }, [state.email])
+
+  useEffect(() => {
+    validate('password')
+  }, [state.password])
+
+  useEffect(() => {
+    validate('name')
+  }, [state.name])
+
+  useEffect(() => {
+    validate('passwordConfirmation')
+  }, [state.passwordConfirmation])
+
+  const validate = (field: string): void => {
     const { email, name, password, passwordConfirmation } = state
     const formData = { email, name, password, passwordConfirmation }
-    const nameError = validation.validate('name', formData)
-    const emailError = validation.validate('email', formData)
-    const passwordError = validation.validate('password', formData)
-    const passwordConfirmationError = validation.validate(
-      'passwordConfirmation',
-      formData
-    )
+    setState(old => ({
+      ...old,
+      [`${field}Error`]: validation.validate(field, formData)
+    }))
 
-    setState({
-      ...state,
-      nameError,
-      emailError,
-      passwordError,
-      passwordConfirmationError,
+    setState(old => ({
+      ...old,
       isFormInvalid:
-        !!nameError ||
-        !!emailError ||
-        !!passwordError ||
-        !!passwordConfirmationError
-    })
-  }, [state.name, state.email, state.password, state.passwordConfirmation])
+        !!old.nameError ||
+        !!old.passwordConfirmationError ||
+        !!old.emailError ||
+        !!old.passwordError
+    }))
+  }
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
