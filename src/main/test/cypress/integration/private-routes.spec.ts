@@ -1,6 +1,6 @@
 import * as Helper from '../utils/helpers'
 
-describe('Login', () => {
+describe('Private Route', () => {
   it('Should logout if survey-list has no token', () => {
     cy.visit('')
     Helper.testUrl('/login')
