@@ -1,6 +1,6 @@
 import React from 'react'
 import { SurveyResult } from '@/presentation/pages'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { ApiContext } from '@/presentation/contexts'
 import {
   LoadSurveyResultSpy,
@@ -107,5 +107,17 @@ describe('SurveyResult Component', () => {
     await waitFor(() => screen.getByTestId('survey-result'))
     expect(setCurrentAccountMock).toHaveBeenCalledWith(undefined)
     expect(history.location.pathname).toBe('/login')
+  })
+
+  test('Should call LoadSurveyResult on reload', async () => {
+    const loadSurveyResult = new LoadSurveyResultSpy()
+    jest
+      .spyOn(loadSurveyResult, 'load')
+      .mockRejectedValueOnce(new UnexpectedError())
+    makeSut(loadSurveyResult)
+    await waitFor(() => screen.getByTestId('survey-result'))
+    fireEvent.click(screen.getByTestId('reload'))
+    expect(loadSurveyResult.callsCount).toBe(1)
+    await waitFor(() => screen.getByTestId('survey-result'))
   })
 })
