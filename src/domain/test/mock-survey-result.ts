@@ -1,4 +1,5 @@
 import faker from 'faker'
+import { SurveyResultModel } from '../models'
 import { LoadSurveyResult, SaveSurveyResult } from '../usecases'
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResult.Params => ({
@@ -30,6 +31,16 @@ export class LoadSurveyResultSpy implements LoadSurveyResult {
   surveyResult = mockSurveyResultModel()
   async load(): Promise<LoadSurveyResult.Model> {
     this.callsCount++
+    return this.surveyResult
+  }
+}
+
+export class SaveSurveyResultSpy implements SaveSurveyResult {
+  params: SaveSurveyResult.Params
+  surveyResult = mockSurveyResultModel()
+
+  async save(params: SaveSurveyResult.Params): Promise<SaveSurveyResult.Model> {
+    this.params = params
     return this.surveyResult
   }
 }
