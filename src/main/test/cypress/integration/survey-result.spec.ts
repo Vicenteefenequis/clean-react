@@ -75,7 +75,8 @@ describe('SurveyResult', () => {
 
   describe('save', () => {
     const mockUnexpectedError = (): void => Http.mockServerError(path, 'PUT')
-
+    const mockAccessDeniedError = (): void =>
+      Http.mockForbiddenError(path, 'PUT')
     beforeEach(() => {
       cy.fixture('account').then(account => {
         Helper.setLocalStorageItem('account', account)
@@ -91,6 +92,12 @@ describe('SurveyResult', () => {
         'contain.text',
         'Algo de errado aconteceu. Tente novamente em breve'
       )
+    })
+
+    it('Should logout on AccessDeniedError', () => {
+      mockAccessDeniedError()
+      cy.get('li:nth-child(2)').click()
+      Helper.testUrl('/login')
     })
   })
 })
