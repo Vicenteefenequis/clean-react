@@ -1,6 +1,6 @@
 import { SurveyResultModel } from '@/domain/models'
 
-export interface LoadSurveyResult {
+export interface SaveSurveyResult {
   save(params: SaveSurveyResult.Params): Promise<SaveSurveyResult.Model>
 }
 
